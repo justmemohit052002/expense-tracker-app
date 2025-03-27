@@ -1,7 +1,6 @@
 import { colors, radius, spacingX, spacingY } from "@/constants/theme";
 import { TransactionListType } from "@/types";
 import { verticalScale } from "@/utils/styling";
-import { List } from "phosphor-react-native";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Typo from "./typo";
@@ -19,6 +18,7 @@ const TransactionList = ({
           {title}
         </Typo>
       )}
+      <View style={styles.list}></View>
     </View>
   );
 };

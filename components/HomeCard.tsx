@@ -10,7 +10,7 @@ const HomeCard = () => {
   return (
     <ImageBackground
       source={require("../assets/images/card.png")}
-      resizeMode="stretch"
+      contentFit="fill" // Changed from resizeMode to contentFit
       style={styles.bgImage}
     >
       <View style={styles.container}>
