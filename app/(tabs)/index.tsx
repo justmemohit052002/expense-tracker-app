@@ -15,6 +15,7 @@ import * as Icons from "phosphor-react-native";
 // Add this import instead
 import { ScrollView } from "react-native";
 import HomeCard from "@/components/HomeCard";
+import TransactionList from "@/components/TransactionList";
 const Home = () => {
   const { user } = useAuth();
 
@@ -38,15 +39,17 @@ const Home = () => {
             />
           </TouchableOpacity>
         </View>
-        
+
         {/* Move ScrollView outside header */}
         <ScrollView
           contentContainerStyle={styles.scrollViewStyle}
           showsVerticalScrollIndicator={false}
         >
+          {/* card */}
           <View>
             <HomeCard />
           </View>
+          <TransactionList title="Recent Transactions" />
         </ScrollView>
       </View>
     </ScreenWrapper>
