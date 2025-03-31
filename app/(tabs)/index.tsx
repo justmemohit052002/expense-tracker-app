@@ -16,8 +16,10 @@ import * as Icons from "phosphor-react-native";
 import { ScrollView } from "react-native";
 import HomeCard from "@/components/HomeCard";
 import TransactionList from "@/components/TransactionList";
+import { useRouter } from "expo-router";
 const Home = () => {
   const { user } = useAuth();
+  const router = useRouter();
 
   return (
     <ScreenWrapper>
@@ -49,8 +51,24 @@ const Home = () => {
           <View>
             <HomeCard />
           </View>
-          <TransactionList title="Recent Transactions" />
+          <TransactionList
+            data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+            loading={false}
+            emptyListMessage="No transactions found"
+            title="Recent Transactions"
+          />
         </ScrollView>
+
+        <Button
+          style={styles.floatingButton}
+          onPress={() => router.push("/(modals)/transactionModal")}
+        >
+          <Icons.Plus
+            color={colors.black}
+            weight="bold"
+            size={verticalScale(24)}
+          />
+        </Button>
       </View>
     </ScreenWrapper>
   );
