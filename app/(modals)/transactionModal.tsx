@@ -87,7 +87,7 @@ const TransactionModal = () => {
       Alert.alert("Error", "Please fill all the fields");
       return;
     }
-    console.log("Good to go");
+
     let transactionData: TransactionType = {
       type,
       amount,
@@ -98,7 +98,7 @@ const TransactionModal = () => {
       image,
       uid: user?.uid,
     };
-    console.log("transactionData:", transactionData);
+
     //todo: includec transaction id in the url
     setLoading(true);
     const res = await creaOrUpdateTransaction(transactionData);
