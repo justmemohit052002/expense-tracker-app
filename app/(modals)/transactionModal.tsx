@@ -47,6 +47,7 @@ const TransactionModal = () => {
     description: "",
     image: null,
   });
+
   const [loading, setLoading] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const router = useRouter();
@@ -61,8 +62,18 @@ const TransactionModal = () => {
     orderBy("created", "desc"),
   ]);
 
-  const oldTransaction: { name: string; image: string; id: string } =
-    useLocalSearchParams();
+  type paramType = {
+    id: string;
+    type: string;
+    amount: string;
+    category: string;
+    date: string;
+    description: string;
+    image: any;
+    uid: string;
+    walletId: string;
+  };
+  const oldTransaction: paramType = useLocalSearchParams();
 
   const onDateChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || transaction.date;
@@ -71,14 +82,19 @@ const TransactionModal = () => {
   };
   // console.log("oldTransaction:", oldTransaction);
 
-  // useEffect(() => {
-  //   if (oldTransaction?.id) {
-  //     setTransaction({
-  //       name: oldTransaction?.name,
-  //       image: oldTransaction?.image,
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (oldTransaction?.id) {
+      setTransaction({
+        type: oldTransaction?.type,
+        amount: Number(oldTransaction.amount),
+        description: oldTransaction.description || "",
+        category: oldTransaction.category || "",
+        date: new Date(oldTransaction.date),
+        walletId: oldTransaction.walletId,
+        image: oldTransaction?.image,
+      });
+    }
+  }, []);
 
   const onSubmit = async () => {
     const { type, amount, category, date, description, walletId, image } =

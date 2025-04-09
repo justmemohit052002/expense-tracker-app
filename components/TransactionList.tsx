@@ -1,5 +1,9 @@
 import { colors, radius, spacingX, spacingY } from "@/constants/theme";
-import { TransactionItemProps, TransactionListType } from "@/types";
+import {
+  TransactionItemProps,
+  TransactionListType,
+  TransactionType,
+} from "@/types";
 import { verticalScale } from "@/utils/styling";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
@@ -9,6 +13,7 @@ import Loading from "./Loading";
 import { expenseCategories, incomeCategory } from "@/constants/data";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { Timestamp } from "firebase/firestore";
+import { useRouter } from "expo-router";
 
 const TransactionList = ({
   data,
@@ -16,9 +21,25 @@ const TransactionList = ({
   loading,
   emptyListMessage,
 }: TransactionListType) => {
-  const handleClick = () => {
+  const router = useRouter();
+
+  const handleClick = (item: TransactionType) => {
     // this component will open transaction details screen (Modal)
     //TODO: implement this
+
+    router.push({
+      pathname: "/(modals)/transactionModal",
+      params: {
+        id: item.id,
+        type: item?.type,
+        amount: item?.amount?.toString(),
+        category: item?.category,
+        date: (item.date as Timestamp)?.toDate()?.toISOString(),
+        description: item?.description,
+        image: item?.uid,
+        walletId: item?.walletId,
+      },
+    });
   };
   return (
     <View style={styles.container}>
