@@ -35,6 +35,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { creaOrUpdateTransaction } from "@/services/transactionService";
+import { deleteWallet } from "@/services/walletServices";
 
 const TransactionModal = () => {
   const { user } = useAuth();
@@ -111,9 +112,14 @@ const TransactionModal = () => {
       category,
       walletId,
       description,
-      image,
+      image: image ? image : null,
       uid: user?.uid,
     };
+
+    console.log("transactionData:", transactionData);
+    return;
+    if (oldTransaction?.id) transactionData.id = oldTransaction.id;
+    setLoading(true);
 
     //todo: includec transaction id in the url
     setLoading(true);
@@ -127,6 +133,15 @@ const TransactionModal = () => {
     }
   };
 
+  const onDelete = async () => {
+    if (!oldTransaction?.id) return;
+    setLoading(true);
+    const res = await deleteWallet(oldTransaction.id);
+    setLoading(false);
+    if (res?.success) {
+      router.back();
+    }
+  };
   const showDeleteAlert = () => {
     Alert.alert(
       "Confirm",
