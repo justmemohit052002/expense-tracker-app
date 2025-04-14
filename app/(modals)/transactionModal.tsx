@@ -34,7 +34,10 @@ import { orderBy, where } from "firebase/firestore";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { creaOrUpdateTransaction } from "@/services/transactionService";
+import {
+  creaOrUpdateTransaction,
+  deleteTransaction,
+} from "@/services/transactionService";
 import { deleteWallet } from "@/services/walletServices";
 
 const TransactionModal = () => {
@@ -116,13 +119,11 @@ const TransactionModal = () => {
       uid: user?.uid,
     };
 
-    console.log("transactionData:", transactionData);
-    return;
+    console.log("transactionData:", transactionData); // This will now show in the console
+
     if (oldTransaction?.id) transactionData.id = oldTransaction.id;
     setLoading(true);
 
-    //todo: includec transaction id in the url
-    setLoading(true);
     const res = await creaOrUpdateTransaction(transactionData);
 
     setLoading(false);
@@ -136,16 +137,21 @@ const TransactionModal = () => {
   const onDelete = async () => {
     if (!oldTransaction?.id) return;
     setLoading(true);
-    const res = await deleteWallet(oldTransaction.id);
+    const res = await deleteTransaction(
+      oldTransaction?.id,
+      oldTransaction.walletId
+    );
     setLoading(false);
     if (res?.success) {
       router.back();
+    } else {
+      Alert.alert("Transaction", res.msg);
     }
   };
   const showDeleteAlert = () => {
     Alert.alert(
       "Confirm",
-      "Are you sure you want to delete this transaction?\n This action cannot be undone. ",
+      "Are you sure you want to delete this transaction?  ",
       [
         {
           text: "Cancel",
