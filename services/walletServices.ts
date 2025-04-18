@@ -72,7 +72,6 @@ export const deleteTransactionByWalletId = async (walletId: string): Promise<Res
                 break;
             }
             const batch = writeBatch(firestore);
-
             transactionsSnapshot.forEach((transactionDoc) => {
                 batch.delete(transactionDoc.ref);
             })

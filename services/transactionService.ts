@@ -1,9 +1,12 @@
 import { firestore } from "@/config/firebase";
 import { ResponseType,TransactionType, WalletType } from "@/types";
-import { collection, deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, Timestamp, updateDoc, where } from "firebase/firestore";
 import { uploadFileToCloudinary } from "./imageService";
 import { createOrUpdateWallet } from "./walletServices";
 import { transactionTypes } from "@/constants/data";
+import { getLast7Days } from "@/utils/common";
+import { scale } from "@/utils/styling";
+import { colors } from "@/constants/theme";
 
 
 export const creaOrUpdateTransaction = async(
@@ -219,6 +222,75 @@ export const deleteTransaction = async (
     }
     catch (err: any) {
         console.log("error  updating the new transaction", err);
+        return { success: false, msg: err.message };
+    }
+};
+
+export const fetchWeeklyStats = async (
+    uid: string,
+) : Promise<ResponseType>=> {
+    try {   
+        const db = firestore;
+        const today = new Date();
+        const sevenDaysAgo = new Date(today)
+        sevenDaysAgo.setDate(today.getDate() - 7);
+
+        const transactionQuery = query(
+            collection(db, "transactions"),
+            where("date", ">=", Timestamp.fromDate(sevenDaysAgo)),
+            where("date", "<=", Timestamp.fromDate(today)),
+            orderBy("date", "asc"),
+            where("uid", "==", uid)
+        );
+
+        const querySnapshot = await getDocs(transactionQuery);
+        const weeklyData = getLast7Days();
+        const transactions: TransactionType[] = [];
+
+        //maping each transaction in day
+        querySnapshot.forEach((doc) => {
+            const transaction = doc.data() as TransactionType;
+            transaction.id = doc.id;
+            transactions.push(transaction);
+
+            const transactionDate = (transaction.date as Timestamp
+            ).toDate().toISOString().split("T")[0]; // as specific date
+
+            const dayData = weeklyData.find((day) => day.date == transactionDate);
+
+            if (dayData) {
+                if (transaction.type == 'income') {
+                    dayData.income += transaction.amount;
+                }
+                else if(transaction.type == "expense") {
+                    dayData.expense += transaction.amount;
+                }
+            }
+        })
+
+        const stats = weeklyData.flatMap((day) => [
+            {
+                value: day.income,
+                label: day.day,
+                spacing: scale(4),
+                labelWidth: scale(30),
+                frontColor: colors.primary,
+            },
+            {
+                value: day.expense,
+                frontColor: colors.rose,
+            },
+        ]);
+        return {
+            success: true,
+            data: {
+                stats,
+                transactions,
+            }
+        }
+    }
+    catch (err: any) {
+        console.log("error fetching weekly stats", err);
         return { success: false, msg: err.message };
     }
 };
