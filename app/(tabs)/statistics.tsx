@@ -9,12 +9,19 @@ import { BarChart } from "react-native-gifted-charts";
 import Typo from "@/components/typo";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/contexts/authContext";
-import { fetchWeeklyStats } from "@/services/transactionService";
+import {
+  fetchMonthlyStats,
+  fetchWeeklyStats,
+  fetchYearlyStats,
+} from "@/services/transactionService";
+import { Transaction } from "firebase/firestore";
+import TransactionList from "@/components/TransactionList";
 
 const Statistics = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { user } = useAuth();
   const [chartData, setChartData] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   const [chartLoading, setChartLoading] = useState(false);
 
@@ -37,15 +44,36 @@ const Statistics = () => {
     setChartLoading(false);
     if (res.success) {
       setChartData(res?.data?.stats);
+      setTransactions(res?.data?.transactions);
     } else {
       Alert.alert("Error", res.msg);
     }
   };
   const getMonthlyStats = async () => {
-    //get weekly stats
+    //get Monthly stats
+
+    setChartLoading(true);
+    let res = await fetchMonthlyStats(user?.uid as string);
+    setChartLoading(false);
+    if (res.success) {
+      setChartData(res?.data?.stats);
+      setTransactions(res?.data?.transactions);
+    } else {
+      Alert.alert("Error", res.msg);
+    }
   };
   const getYearlyStats = async () => {
-    //get weekly stats
+    //get yearly stats
+
+    setChartLoading(true);
+    let res = await fetchYearlyStats(user?.uid as string);
+    setChartLoading(false);
+    if (res.success) {
+      setChartData(res?.data?.stats);
+      setTransactions(res?.data?.transactions);
+    } else {
+      Alert.alert("Error", res.msg);
+    }
   };
 
   return (
@@ -110,6 +138,14 @@ const Statistics = () => {
                 <Loading color={colors.white} />
               </View>
             )}
+          </View>
+          {/* transactions  */}
+          <View>
+            <TransactionList
+              title="Transactions"
+              emptyListMessage="No transactions found"
+              data={transactions}
+            />
           </View>
         </ScrollView>
       </View>
