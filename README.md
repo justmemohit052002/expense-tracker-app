@@ -1,54 +1,64 @@
-<<<<<<< HEAD
-# Welcome to your Expo app 👋
+# Expense Tracker App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A comprehensive mobile application built with React Native and Expo for tracking personal expenses and managing multiple wallets.
 
-## Get started
+## Features
 
-1. Install dependencies
+- 📱 Cross-platform support (iOS & Android)
+- 🔐 User authentication (Login/Register)
+- 💰 Multiple wallet management
+- 📊 Transaction tracking and categorization
+- 📈 Statistical analysis with charts
+- 🔍 Search functionality
+- 👤 Profile management
+- 📸 Image upload support for receipts and profiles
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- React Native with Expo
+- Firebase Authentication
+- Cloud Firestore
+- React Navigation
+- React Native Reanimated
+- React Native Element Dropdown
+- React Native Gifted Charts
+- Phosphor Icons
 
-   ```bash
-    npx expo start
-   ```
+## Project Structure
 
-In the output, you'll find options to open the app in a
+## Key Features
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Authentication
+- Email/Password authentication
+- User profile management
+- Profile picture upload
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Wallet Management
+- Create multiple wallets
+- Track balance per wallet
+- Customize wallet with icons
 
-## Get a fresh project
+### Transactions
+- Add income/expense transactions
+- Categorize transactions
+- Attach receipt images
+- Search transactions
 
-When you're ready, run:
+### Statistics
+- Weekly/Monthly/Yearly views
+- Visual charts
+- Transaction history
+- Income/Expense analysis
 
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies:
 ```bash
-npm run reset-project
-```
+npm install
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+This README provides a comprehensive overview of your expense tracker app, including its features, technology stack, project structure, and setup instructions. It's designed to help users and potential contributors understand the project quickly.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-=======
-# expense-tracker-app
->>>>>>> 0a0fec536f7692b0f22f24407ef9cb89cf11f798
+The structure follows standard GitHub README conventions with clear sections for features, setup, and contribution guidelines. The project structure section accurately reflects your current codebase organization based on the file structure I observed.
